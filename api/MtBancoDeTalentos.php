@@ -58,9 +58,9 @@ class MtBancoDeTalentos
     public function toArray(): array
     {
         return [
-            'Id' => $this->Id, 
-            'Nome' => $this->Nome, 
-            'Email' => $this->Email,
+            'id' => $this->Id, 
+            'nome' => $this->Nome, 
+            'email' => $this->Email,
         ];
     }
 }

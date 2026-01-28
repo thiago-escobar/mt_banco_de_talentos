@@ -26,7 +26,11 @@ class Database
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ];
 
-            self::$connection = new PDO($dsn, $user, $pass, $options);
+            try {
+                self::$connection = new PDO($dsn, $user, $pass, $options);
+            } catch (PDOException $e) {
+                throw new \Exception("Não foi possível conectar ao banco de dados. Por favor, tente novamente mais tarde.");
+            }
         }
         return self::$connection;
     }

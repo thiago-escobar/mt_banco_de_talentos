@@ -31,7 +31,7 @@ use App\Controllers\AuthController;
 
 try {
     $controller = new AuthController();
-    $controller->login();
+    $controller->register();
 } catch (\Throwable $e) {
     http_response_code(500);
     echo "Erro no servidor: " . $e->getMessage();

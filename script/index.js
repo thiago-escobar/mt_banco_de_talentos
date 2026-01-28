@@ -23,11 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = response.url;
                 } else {
                     // Caso o PHP não redirecione (ex: erro inesperado)
-                    throw new Error('Resposta inválida do servidor');
+                    const errorMessage = await response.text();
+                    throw new Error(errorMessage || 'Resposta inválida do servidor');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Ocorreu um erro ao tentar conectar. Por favor, tente novamente.');
+                alert(error.message);
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
             }
