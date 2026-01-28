@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Permite acessar arquivos .html sem digitar a extensão
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Permite acessar arquivos .php sem digitar a extensão (útil para a API)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]

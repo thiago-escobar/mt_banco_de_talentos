@@ -23,7 +23,7 @@ class AuthController
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['nome'];
                 
-                header('Location: ../dashboard.html');
+                header('Location: ../dashboard');
                 exit;
             } else {
                 // Falha no login
@@ -39,9 +39,10 @@ class AuthController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $cargo = filter_input(INPUT_POST, 'cargo', FILTER_VALIDATE_INT);
             $password = $_POST['password'] ?? '';
 
-            if (empty($name) || empty($email) || empty($password)) {
+            if (empty($name) || empty($email) || empty($password) || empty($cargo)) {
                 http_response_code(400);
                 echo "Todos os campos são obrigatórios.";
                 exit;
@@ -49,7 +50,7 @@ class AuthController
 
             try {
                 $userModel = new User();
-                $userModel->create($name, $email, $password);
+                $userModel->create($name, $email, $password, $cargo);
                 http_response_code(201);
                 echo "Usuário criado com sucesso.";
             } catch (\Exception $e) {
