@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
+    const form = document.getElementById('cadastroCurriculoForm');
     const alertContainer = document.getElementById('alert-container');
+    const submitBtn = form.querySelector('button[type="submit"]');
 
     const showAlert = (message, type) => {
         if (alertContainer) {
@@ -11,39 +12,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 '</div>'
             ].join('');
         } else {
-            // Fallback caso o container não exista
-            alert(message);
+            alert(message); // Fallback
         }
     };
 
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerText;
 
-            // Feedback visual de carregamento
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Entrando...';
+            submitBtn.innerText = 'Enviando...';
+
+            const formData = new FormData(form);
 
             try {
-                const response = await fetch('https://bancodetalentos.matosteixeira.com.br/api/login.php', {
+                // Assumindo que o endpoint para criação é api/create_curriculo.php
+                const response = await fetch('api/create_curriculo.php', {
                     method: 'POST',
                     body: formData
                 });
 
-                if (response.redirected) {
-                    window.location.href = "dashboard";//response.url;
+                if (response.ok) {
+                    showAlert('Currículo cadastrado com sucesso! Redirecionando...', 'success');
+                    form.reset();
+                    setTimeout(() => {
+                        window.location.href = 'lista-de-curriculos';
+                    }, 2000);
                 } else {
-                    // Caso o PHP não redirecione (ex: erro inesperado)
-                    const errorMessage = await response.text();
-                    throw new Error(errorMessage || 'Resposta inválida do servidor');
+                    const result = await response.json();
+                    showAlert('Erro ao cadastrar: ' + (result.error || 'Erro desconhecido'), 'danger');
                 }
             } catch (error) {
-                console.error('Erro:', error);
-                showAlert(error.message, 'danger');
+                showAlert('Erro de conexão com o servidor.', 'danger');
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
             }

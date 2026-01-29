@@ -1,5 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registerForm');
+    const alertContainer = document.getElementById('alert-container');
+
+    const showAlert = (message, type) => {
+        if (alertContainer) {
+            alertContainer.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('');
+        } else {
+            // Fallback caso o container não exista no HTML
+            alert(message);
+        }
+    };
 
     if (form) {
         form.addEventListener('submit', async (e) => {
@@ -14,15 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    alert('Usuário cadastrado com sucesso!');
-                    window.location.href = 'lista-de-usuarios';
+                    showAlert('Usuário cadastrado com sucesso! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'lista-de-usuarios';
+                    }, 2000);
                 } else {
                     const result = await response.json();
-                    alert('Erro ao cadastrar: ' + (result.error || 'Erro desconhecido'));
+                    showAlert('Erro ao cadastrar: ' + (result.error || 'Erro desconhecido'), 'danger');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro de conexão com o servidor.');
+                showAlert('Erro de conexão com o servidor.', 'danger');
             }
         });
     }

@@ -1,5 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.querySelector('table tbody');
+    const alertContainer = document.getElementById('alert-container');
+
+    const showAlert = (message, type) => {
+        if (alertContainer) {
+            alertContainer.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('');
+        } else {
+            // Fallback in case the container is missing
+            console.error(message);
+        }
+    };
 
     async function carregarCurriculos() {
         try {
@@ -40,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Erro:', error);
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Não foi possível carregar os currículos.</td></tr>';
+            showAlert('Não foi possível carregar os currículos. Verifique sua conexão ou tente novamente mais tarde.', 'danger');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Falha ao carregar dados.</td></tr>';
         }
     }
 
