@@ -39,7 +39,7 @@ class User
     public function getAll(): array
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT u.id, u.nome, u.email, c.nome as cargo FROM Usuarios u LEFT JOIN Cargos c ON u.perfil = c.id ORDER BY u.nome ASC");
+        $stmt = $pdo->query("SELECT u.id, u.nome, u.email, p.nome as perfil FROM Usuarios u LEFT JOIN Perfis p ON u.perfil = p.id ORDER BY u.nome ASC");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

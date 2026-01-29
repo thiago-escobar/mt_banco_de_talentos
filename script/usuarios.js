@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tr.innerHTML = `
                     <td>${user.nome}</td>
                     <td>${user.email}</td>
-                    <td>${user.cargo || 'Sem cargo'}</td>
+                    <td>${user.perfil || 'Sem Perfil'}</td>
                 `;
                 tbody.appendChild(tr);
             });

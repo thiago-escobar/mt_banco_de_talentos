@@ -7,7 +7,29 @@ Detalhes: #FFCB05
 */
 
 body {
-    background-color: #FFF;
+    background-color: #939598;
     height: 100vh;
     font-family: 'Century Gothic', sans-serif;
+}
+h1, h2{
+    color: white;
+    font-weight: bold;
+}
+.btn-primary {
+    background-color: #FFCB05 !important;
+    color: #444 !important;
+    border-color: #444 !important;
+    font-weight: bold !important;
+}
+.btn-breadcrumb{
+    background-color: #FFF !important;
+    color: #444 !important;
+    border-color: #444 !important;
+    font-weight: bold !important;
+}
+.bt-submit-forms{
+    float: right;
+}
+.bt-submit-forms button{
+    width: fit-content;
 }
