@@ -33,9 +33,9 @@ class CurriculoController
                 $curriculoModel = new Curriculo();
                 $arquivo = $curriculoModel->getArquivo($id);
 
-                if ($arquivo && !empty($arquivo['arquivo'])) {
-                    header("Content-Type: application/pdf");
-                    header("Content-Disposition: attachment; filename=\"curriculo.pdf\"");
+                if ($arquivo && !empty($arquivo['arquivo']) && !empty($arquivo['extensaoarquivo'])) {
+                    header("Content-Type: application/".$arquivo['extensaoarquivo']);
+                    header("Content-Disposition: attachment; filename=\"curriculo_".$this->nameClear($arquivo['nome']).".".$arquivo['extensaoarquivo']."\"");
                     header("Content-Length: " . strlen($arquivo['arquivo']));
                     echo $arquivo['arquivo'];
                     exit;
@@ -44,5 +44,19 @@ class CurriculoController
             http_response_code(404);
             echo "Arquivo não encontrado.";
         }
+    }
+    public function nameClear($nome): string
+    {
+        $nome = mb_strtolower($nome, 'UTF-8');
+        $map = [
+            'á' => 'a', 'à' => 'a', 'ã' => 'a', 'â' => 'a', 'ä' => 'a',
+            'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+            'ó' => 'o', 'ò' => 'o', 'õ' => 'o', 'ô' => 'o', 'ö' => 'o',
+            'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+            'ç' => 'c', 'ñ' => 'n'
+        ];
+        $nome = strtr($nome, $map);
+        return str_replace(' ', '_', $nome);
     }
 }

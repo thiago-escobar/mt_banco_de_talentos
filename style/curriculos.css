@@ -8,3 +8,9 @@ th{
 .tabela-campo-anotacoes{
     width: 33%;
 }
+.btn-outline-primary{
+    border-color: #444 !important;
+    color: #444 !important;
+    background-color: #FFCB05 !important;
+    font-weight: bold !important;
+}

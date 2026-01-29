@@ -14,13 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const listaCurriculos = await response.json();
-            console.log("--------------------------------------");
-            console.log("");
-            console.log("");
-            console.log(listaCurriculos);
-            console.log("");
-            console.log("");
-            console.log("--------------------------------------");
 
             // Limpa o conteúdo atual (loading ou exemplo estático)
             tbody.innerHTML = '';
@@ -35,10 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tr = document.createElement('tr');
 
                 // Verifica se existe link de arquivo
-                const linkArquivo = /*curriculo.arquivo 
-                    ? `<a href="${curriculo.arquivo}" target="_blank" class="btn btn-sm btn-outline-primary">Visualizar PDF</a>` 
-                    : */'<a href="../api/downloadArquivo.php?id='+curriculo.id+'">Baixar Arquivo</a>';
-
+                const linkArquivo = `<a href="api/download.php?id=${curriculo.id}" target="_blank" class="btn btn-sm btn-outline-primary">Baixar Arquivo</a>`;
                 tr.innerHTML = `
                     <td>${curriculo.nome || '-'}</td>
                     <td>${curriculo.cargo || '-'}</td>

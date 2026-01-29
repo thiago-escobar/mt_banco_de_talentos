@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     alert('Usuário cadastrado com sucesso!');
-                    window.location.href = 'usuarios';
+                    window.location.href = 'lista-de-usuarios';
                 } else {
                     const result = await response.json();
                     alert('Erro ao cadastrar: ' + (result.error || 'Erro desconhecido'));

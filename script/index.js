@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.redirected) {
-                    window.location.href = response.url;
+                    window.location.href = "dashboard";//response.url;
                 } else {
                     // Caso o PHP não redirecione (ex: erro inesperado)
                     const errorMessage = await response.text();

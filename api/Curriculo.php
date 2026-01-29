@@ -20,7 +20,7 @@ class Curriculo
     public function getArquivo(int $id): ?array
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT arquivo FROM Curriculos WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT nome, arquivo, extensaoarquivo FROM Curriculos WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
