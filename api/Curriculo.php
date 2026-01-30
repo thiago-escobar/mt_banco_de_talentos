@@ -25,6 +25,13 @@ class Curriculo
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
+    public function create(string $nome, string $email, string $telefone, int $cargo, string $arquivoContent, string $extensao): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("INSERT INTO Curriculos (nome, email, telefone, cargo, arquivo, extensaoarquivo, dataenvio) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+        return $stmt->execute([$nome, $email, $telefone, $cargo, $arquivoContent, $extensao]);
+    }
+
     public function updateAnotacao(int $id, string $anotacao): bool
     {
         $pdo = Database::getConnection();

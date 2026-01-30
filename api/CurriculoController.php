@@ -24,6 +24,69 @@ class CurriculoController
         }
     }
 
+    public function create(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_SPECIAL_CHARS);
+            $cargo = filter_input(INPUT_POST, 'cargo', FILTER_VALIDATE_INT);
+            
+            if (empty($nome) || empty($email) || empty($telefone) || empty($cargo)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Todos os campos são obrigatórios.']);
+                return;
+            }
+
+            if (!isset($_FILES['arquivo']) || $_FILES['arquivo']['error'] !== UPLOAD_ERR_OK) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Erro no upload do arquivo.']);
+                return;
+            }
+
+            $fileTmpPath = $_FILES['arquivo']['tmp_name'];
+            $fileName = $_FILES['arquivo']['name'];
+            $fileSize = $_FILES['arquivo']['size'];
+            
+            $extensao = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $allowedExtensions = ['pdf', 'doc', 'docx'];
+
+            if (!in_array($extensao, $allowedExtensions)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Apenas arquivos PDF, DOC e DOCX são permitidos.']);
+                return;
+            }
+
+            // Limite de tamanho (10MB)
+            if ($fileSize > 10 * 1024 * 1024) {
+                http_response_code(400);
+                echo json_encode(['error' => 'O arquivo excede o tamanho máximo permitido (10MB).']);
+                return;
+            }
+
+            $arquivoContent = file_get_contents($fileTmpPath);
+
+            try {
+                $curriculoModel = new Curriculo();
+                $success = $curriculoModel->create($nome, $email, $telefone, $cargo, $arquivoContent, $extensao);
+
+                if ($success) {
+                    http_response_code(201);
+                    echo json_encode(['success' => true]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Erro ao salvar no banco de dados.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => $e->getMessage()]);
+            }
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método não permitido']);
+        }
+    }
+
     public function download(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
