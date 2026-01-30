@@ -153,6 +153,35 @@ class CurriculoController
         }
     }
 
+    public function criarTag(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $cor = filter_input(INPUT_POST, 'cor', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            if (empty($nome) || empty($cor)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Nome e cor são obrigatórios.']);
+                return;
+            }
+
+            try {
+                $model = new Curriculo();
+                $success = $model->criarTag($nome, $cor);
+
+                if ($success) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Erro ao criar tag.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => $e->getMessage()]);
+            }
+        }
+    }
+
     public function gerenciarTag(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

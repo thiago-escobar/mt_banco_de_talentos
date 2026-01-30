@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let todasTagsSistema = [];
     let tagsEdicao = [];
     let curriculoEmEdicao = null;
+    let filteredCurriculos = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
     let alertTimeout;
 
     const showAlert = (message, type) => {
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
 
         if (!Array.isArray(lista) || lista.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhum currículo encontrado.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum currículo encontrado.</td></tr>';
             return;
         }
 
@@ -76,6 +79,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function renderizarControlesPaginacao() {
+        const paginationContainer = document.getElementById('paginacao-container');
+        if (!paginationContainer) return;
+
+        paginationContainer.innerHTML = '';
+        const totalPages = Math.ceil(filteredCurriculos.length / itemsPerPage);
+
+        if (totalPages <= 1) return;
+
+        let paginationHTML = '<ul class="pagination">';
+        
+        // Botão Anterior
+        paginationHTML += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage - 1}">Anterior</a>
+        </li>`;
+
+        // Números das páginas
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHTML += `<li class="page-item ${currentPage === i ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+            </li>`;
+        }
+
+        // Botão Próximo
+        paginationHTML += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage + 1}">Próximo</a>
+        </li>`;
+
+        paginationHTML += '</ul>';
+        paginationContainer.innerHTML = paginationHTML;
+
+        paginationContainer.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = parseInt(e.target.getAttribute('data-page'));
+                if (page > 0 && page <= totalPages) {
+                    currentPage = page;
+                    atualizarTabelaComPaginacao();
+                }
+            });
+        });
+    }
+
+    function atualizarTabelaComPaginacao() {
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = filteredCurriculos.slice(start, end);
+        
+        renderizarTabela(paginatedItems);
+        renderizarControlesPaginacao();
+    }
+
     async function carregarCurriculos() {
         try {
             // Feedback visual de carregamento
@@ -89,24 +144,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             todosCurriculos = await response.json();
-            renderizarTabela(todosCurriculos);
+            filteredCurriculos = todosCurriculos;
+            atualizarTabelaComPaginacao();
 
         } catch (error) {
             console.error('Erro:', error);
             showAlert('Não foi possível carregar os currículos. Verifique sua conexão ou tente novamente mais tarde.', 'danger');
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Falha ao carregar dados.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Falha ao carregar dados.</td></tr>';
         }
     }
 
     if (filtroInput) {
         filtroInput.addEventListener('input', (e) => {
-            const termo = e.target.value.toLowerCase();
-            const filtrados = todosCurriculos.filter(c => 
-                (c.nome && c.nome.toLowerCase().includes(termo)) || 
-                (c.cargo && c.cargo.toLowerCase().includes(termo)) ||
-                (c.anotacao && c.anotacao.toLowerCase().includes(termo))
+            const termos = e.target.value.toLowerCase().split('+').map(t => t.trim()).filter(t => t);
+            filteredCurriculos = todosCurriculos.filter(c => 
+                termos.every(termo => 
+                    (c.nome && c.nome.toLowerCase().includes(termo)) || 
+                    (c.cargo && c.cargo.toLowerCase().includes(termo)) ||
+                    (c.anotacao && c.anotacao.toLowerCase().includes(termo)) ||
+                    (c.tags && c.tags.toLowerCase().includes(termo))
+                )
             );
-            renderizarTabela(filtrados);
+            currentPage = 1;
+            atualizarTabelaComPaginacao();
         });
     }
 

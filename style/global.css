@@ -33,3 +33,14 @@ h1, h2{
 .bt-submit-forms button{
     width: fit-content;
 }
+.form-control:focus, .form-select:focus {
+    border-color: #444 !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 203, 5, 0.5) !important;
+}
+.form-control::file-selector-button {
+    background-color: #444 !important;
+    color: #FFF !important;
+}
+.form-control:hover::file-selector-button {
+    background-color: #333 !important;
+}

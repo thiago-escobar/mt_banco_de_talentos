@@ -46,6 +46,13 @@ class Curriculo
         return $stmt->fetchAll();
     }
 
+    public function criarTag(string $nome, string $cor): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("INSERT INTO Tags (nome, cor) VALUES (?, ?)");
+        return $stmt->execute([$nome, $cor]);
+    }
+
     public function adicionarTag(int $curriculoId, int $tagId): bool
     {
         $pdo = Database::getConnection();
