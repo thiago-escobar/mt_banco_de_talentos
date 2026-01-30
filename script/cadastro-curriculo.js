@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const alertContainer = document.getElementById('alert-container');
     const submitBtn = form.querySelector('button[type="submit"]');
     let alertTimeout;
+    const cargoSelect = document.getElementById('cargo');
 
     const showAlert = (message, type) => {
         if (alertContainer) {
@@ -21,6 +22,27 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(message); // Fallback
         }
     };
+
+    async function carregarCargos() {
+        if (!cargoSelect) return;
+        try {
+            const response = await fetch('api/cargos.php');
+            if (response.ok) {
+                const cargos = await response.json();
+                // Mantém a opção padrão "Selecione..."
+                cargoSelect.innerHTML = '<option value="" selected disabled>Selecione um cargo...</option>';
+                
+                cargos.forEach(cargo => {
+                    const option = document.createElement('option');
+                    option.value = cargo.id;
+                    option.textContent = cargo.nome;
+                    cargoSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao carregar cargos:', error);
+        }
+    }
 
     if (form) {
         form.addEventListener('submit', async (e) => {
@@ -57,4 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    carregarCargos();
 });

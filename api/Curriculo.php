@@ -52,4 +52,11 @@ class Curriculo
         $stmt = $pdo->prepare("DELETE FROM CurriculosTags WHERE curriculo = ? AND tag = ?");
         return $stmt->execute([$curriculoId, $tagId]);
     }
+
+    public function getTodosCargos(): array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->query("SELECT * FROM Cargos ORDER BY nome");
+        return $stmt->fetchAll();
+    }
 }

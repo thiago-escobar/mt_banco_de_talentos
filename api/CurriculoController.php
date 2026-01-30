@@ -111,6 +111,19 @@ class CurriculoController
         }
     }
 
+    public function listarCargos(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            try {
+                $model = new Curriculo();
+                echo json_encode($model->getTodosCargos());
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => $e->getMessage()]);
+            }
+        }
+    }
+
     public function nameClear($nome): string
     {
         $nome = mb_strtolower($nome, 'UTF-8');
