@@ -5,9 +5,16 @@ th{
 .tabela-campo-anotacoes{
     width: 33%;
 }
+button{
+    background-color: #444 !important;
+    color: #FFF !important;
+}
 .btn-outline-primary{
     border-color: #444 !important;
     color: #444 !important;
     background-color: #FFCB05 !important;
     font-weight: bold !important;
+}
+.btn-close{
+    background-color: #FFF !important;
 }

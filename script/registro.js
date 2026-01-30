@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registerForm');
     const alertContainer = document.getElementById('alert-container');
+    let alertTimeout;
 
     const showAlert = (message, type) => {
         if (alertContainer) {
@@ -10,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
                 '</div>'
             ].join('');
+
+            if (alertTimeout) clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 3000);
         } else {
             // Fallback caso o container não exista no HTML
             alert(message);

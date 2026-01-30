@@ -39,7 +39,29 @@ class User
     public function getAll(): array
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT u.id, u.nome, u.email, p.nome as perfil FROM Usuarios u LEFT JOIN Perfis p ON u.perfil = p.id ORDER BY u.nome ASC");
+        $stmt = $pdo->query("SELECT u.id, u.nome, u.email, p.nome as perfil FROM Usuarios u LEFT JOIN Perfis p ON u.perfil = p.id WHERE u.habilitado = 1 ORDER BY u.nome ASC");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function resetPassword(int $id, string $newPasswordHash): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE Usuarios SET senha = ? WHERE id = ?");
+        return $stmt->execute([$newPasswordHash, $id]);
+    }
+
+    public function toggleProfile(int $id): bool
+    {
+        $pdo = Database::getConnection();
+        // Alterna entre 1 (Admin) e 2 (Recrutador)
+        $stmt = $pdo->prepare("UPDATE Usuarios SET perfil = CASE WHEN perfil = 1 THEN 2 ELSE 1 END WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE Usuarios SET habilitado = 0 WHERE id = ?");
+        return $stmt->execute([$id]);
     }
 }

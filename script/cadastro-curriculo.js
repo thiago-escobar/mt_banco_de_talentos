@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('cadastroCurriculoForm');
     const alertContainer = document.getElementById('alert-container');
     const submitBtn = form.querySelector('button[type="submit"]');
+    let alertTimeout;
 
     const showAlert = (message, type) => {
         if (alertContainer) {
@@ -11,6 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
                 '</div>'
             ].join('');
+
+            if (alertTimeout) clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 3000);
         } else {
             alert(message); // Fallback
         }
