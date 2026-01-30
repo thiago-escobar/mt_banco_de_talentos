@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const badge = document.createElement('div');
                 badge.className = 'badge d-flex align-items-center gap-2 p-2';
                 badge.style.backgroundColor = tag.cor || '#ffc107';
-                badge.style.color = '#000';
+                badge.style.color = '#FFF';
                 badge.innerHTML = `
                     ${tag.nome}
                     <i class="bi bi-x-circle-fill text-danger btn-remover-tag" style="cursor: pointer;" data-id="${tag.id}"></i>
