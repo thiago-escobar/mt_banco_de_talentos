@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cores = curriculo.corestag ? curriculo.corestag.split(',') : [];
                 tagsHtml = tags.map((tag, index) => {
                     const cor = cores[index] ? cores[index].trim() : '#ffc107';
-                    return `<span class="badge text-dark me-1" style="background-color: #${cor} !important; color: #FFF !important;">${tag.trim()}</span>`;
+                    return `<span class="badge text-dark me-1" style="background-color: ${cor} !important; color: #FFF !important;">${tag.trim()}</span>`;
                 }).join('');
             }
 

@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div style="width: 20px; height: 20px; background-color: ${cor}; border: 1px solid #000; border-radius: 4px;"></div>
-                            ${cor}
                         </div>
                     </td>
                     <td><span class="badge text-dark" style="background-color: ${cor}; color: #FFF !important;">${tag.nome}</span></td>
