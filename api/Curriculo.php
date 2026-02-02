@@ -42,7 +42,7 @@ class Curriculo
     public function getTodasTags(): array
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM Tags ORDER BY nome");
+        $stmt = $pdo->query("SELECT t.*, COUNT(ct.curriculo) as total_curriculos FROM Tags t LEFT JOIN CurriculosTags ct ON t.id = ct.tag GROUP BY t.id ORDER BY t.nome");
         return $stmt->fetchAll();
     }
 
@@ -51,6 +51,24 @@ class Curriculo
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("INSERT INTO Tags (nome, cor) VALUES (?, ?)");
         return $stmt->execute([$nome, $cor]);
+    }
+
+    public function atualizarTag(int $id, string $nome, string $cor): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE Tags SET nome = ?, cor = ? WHERE id = ?");
+        return $stmt->execute([$nome, $cor, $id]);
+    }
+
+    public function excluirTag(int $id): bool
+    {
+        $pdo = Database::getConnection();
+        // Remove associações na tabela de relacionamento primeiro
+        $stmt = $pdo->prepare("DELETE FROM CurriculosTags WHERE tag = ?");
+        $stmt->execute([$id]);
+        
+        $stmt = $pdo->prepare("DELETE FROM Tags WHERE id = ?");
+        return $stmt->execute([$id]);
     }
 
     public function adicionarTag(int $curriculoId, int $tagId): bool

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerText = 'Entrando...';
 
             try {
-                const response = await fetch('https://bancodetalentos.matosteixeira.com.br/api/login.php', {
+                const response = await fetch('api/login.php', {
                     method: 'POST',
                     body: formData
                 });

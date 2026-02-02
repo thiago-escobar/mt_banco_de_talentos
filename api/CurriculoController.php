@@ -182,6 +182,64 @@ class CurriculoController
         }
     }
 
+    public function atualizarTag(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $cor = filter_input(INPUT_POST, 'cor', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            if (empty($id) || empty($nome) || empty($cor)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID, nome e cor são obrigatórios.']);
+                return;
+            }
+
+            try {
+                $model = new Curriculo();
+                $success = $model->atualizarTag($id, $nome, $cor);
+
+                if ($success) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Erro ao atualizar tag.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => $e->getMessage()]);
+            }
+        }
+    }
+
+    public function excluirTag(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+            if (empty($id)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID é obrigatório.']);
+                return;
+            }
+
+            try {
+                $model = new Curriculo();
+                $success = $model->excluirTag($id);
+
+                if ($success) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Erro ao excluir tag.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => $e->getMessage()]);
+            }
+        }
+    }
+
     public function gerenciarTag(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

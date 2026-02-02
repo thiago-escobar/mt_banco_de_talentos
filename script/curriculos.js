@@ -144,8 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             todosCurriculos = await response.json();
-            filteredCurriculos = todosCurriculos;
-            atualizarTabelaComPaginacao();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const busca = urlParams.get('busca');
+            if (busca && filtroInput) {
+                filtroInput.value = busca;
+                filtroInput.dispatchEvent(new Event('input'));
+            } else {
+                filteredCurriculos = todosCurriculos;
+                atualizarTabelaComPaginacao();
+            }
 
         } catch (error) {
             console.error('Erro:', error);
@@ -334,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const index = todosCurriculos.findIndex(c => c.id == id);
                     if (index !== -1) {
                         todosCurriculos[index].anotacao = novaAnotacao;
-                        renderizarTabela(todosCurriculos);
+                        atualizarTabelaComPaginacao();
                     }
                     
                     // Fecha o modal
@@ -342,11 +350,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     modal.hide();
                     showAlert('Anotação atualizada com sucesso!', 'success');
                 } else {
-                    alert('Erro ao salvar anotação.');
+                    showAlert('Erro ao salvar anotação.', 'danger');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro de conexão ao salvar.');
+                showAlert('Erro de conexão ao salvar.', 'danger');
             }
         });
     }
