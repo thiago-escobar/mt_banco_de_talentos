@@ -16,7 +16,7 @@ class CurriculoController
                 echo json_encode($curriculos);
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao carregar currículos.']);
             }
         } else {
             http_response_code(405);
@@ -79,7 +79,7 @@ class CurriculoController
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao salvar currículo.']);
             }
         } else {
             http_response_code(405);
@@ -113,7 +113,7 @@ class CurriculoController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-            $anotacao = $_POST['anotacao'] ?? '';
+            $anotacao = filter_input(INPUT_POST, 'anotacao', FILTER_SANITIZE_SPECIAL_CHARS);
 
             if ($id) {
                 try {
@@ -128,7 +128,7 @@ class CurriculoController
                     }
                 } catch (\Exception $e) {
                     http_response_code(500);
-                    echo json_encode(['error' => $e->getMessage()]);
+                    echo json_encode(['error' => 'Erro ao atualizar anotação.']);
                 }
             } else {
                 http_response_code(400);
@@ -148,7 +148,7 @@ class CurriculoController
                 echo json_encode($model->getTodasTags());
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao listar tags.']);
             }
         }
     }
@@ -177,7 +177,7 @@ class CurriculoController
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao criar tag.']);
             }
         }
     }
@@ -207,7 +207,7 @@ class CurriculoController
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao atualizar tag.']);
             }
         }
     }
@@ -235,7 +235,7 @@ class CurriculoController
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao excluir tag.']);
             }
         }
     }
@@ -269,7 +269,7 @@ class CurriculoController
                 echo json_encode($model->getTodosCargos());
             } catch (\Exception $e) {
                 http_response_code(500);
-                echo json_encode(['error' => $e->getMessage()]);
+                echo json_encode(['error' => 'Erro ao listar cargos.']);
             }
         }
     }
