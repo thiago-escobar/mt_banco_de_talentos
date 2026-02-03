@@ -31,8 +31,10 @@ class CurriculoController
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_SPECIAL_CHARS);
             $cargo = filter_input(INPUT_POST, 'cargo', FILTER_VALIDATE_INT);
+            $formacao = filter_input(INPUT_POST, 'formacao', FILTER_VALIDATE_INT);
+            $formacaoDescricao = filter_input(INPUT_POST, 'formacao_descricao', FILTER_SANITIZE_SPECIAL_CHARS);
             
-            if (empty($nome) || empty($email) || empty($telefone) || empty($cargo)) {
+            if (empty($nome) || empty($email) || empty($telefone) || empty($cargo) || empty($formacao)) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Todos os campos são obrigatórios.']);
                 return;
@@ -68,7 +70,7 @@ class CurriculoController
 
             try {
                 $curriculoModel = new Curriculo();
-                $success = $curriculoModel->create($nome, $email, $telefone, $cargo, $arquivoContent, $extensao);
+                $success = $curriculoModel->create($nome, $email, $telefone, $cargo, $formacao, $formacaoDescricao, $arquivoContent, $extensao);
 
                 if ($success) {
                     http_response_code(201);
@@ -270,6 +272,19 @@ class CurriculoController
             } catch (\Exception $e) {
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao listar cargos.']);
+            }
+        }
+    }
+
+    public function listarFormacoes(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            try {
+                $model = new Curriculo();
+                echo json_encode($model->getTodasFormacoes());
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Erro ao listar formações.']);
             }
         }
     }

@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cargoInput = document.getElementById('cargoInput');
     const cargoHidden = document.getElementById('cargoHidden');
     const datalistOptions = document.getElementById('datalistOptions');
+    const formacaoSelect = document.getElementById('formacao');
     let cargosList = [];
 
     const showAlert = (message, type) => {
@@ -42,6 +43,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Erro ao carregar cargos:', error);
+        }
+    }
+
+    async function carregarFormacoes() {
+        if (!formacaoSelect) return;
+        try {
+            const response = await fetch('api/formacoes.php');
+            if (response.ok) {
+                const formacoes = await response.json();
+                formacaoSelect.innerHTML = '<option value="" selected disabled>Selecione uma opção</option>';
+                
+                formacoes.forEach(formacao => {
+                    const option = document.createElement('option');
+                    option.value = formacao.id;
+                    option.textContent = formacao.nome;
+                    formacaoSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao carregar formações:', error);
         }
     }
 
@@ -100,4 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     carregarCargos();
+    carregarFormacoes();
 });

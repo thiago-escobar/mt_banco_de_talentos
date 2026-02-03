@@ -25,11 +25,11 @@ class Curriculo
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function create(string $nome, string $email, string $telefone, int $cargo, string $arquivoContent, string $extensao): bool
+    public function create(string $nome, string $email, string $telefone, int $cargo, int $formacao, ?string $formacaoDescricao, string $arquivoContent, string $extensao): bool
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("INSERT INTO Curriculos (nome, email, telefone, cargo, arquivo, extensaoarquivo, dataenvio) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-        return $stmt->execute([$nome, $email, $telefone, $cargo, $arquivoContent, $extensao]);
+        $stmt = $pdo->prepare("INSERT INTO Curriculos (nome, email, telefone, cargo, formacao, formacao_descricao, arquivo, extensaoarquivo, dataenvio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        return $stmt->execute([$nome, $email, $telefone, $cargo, $formacao, $formacaoDescricao ?: null, $arquivoContent, $extensao]);
     }
 
     public function updateAnotacao(int $id, string $anotacao): bool
@@ -89,6 +89,13 @@ class Curriculo
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->query("SELECT * FROM Cargos ORDER BY nome");
+        return $stmt->fetchAll();
+    }
+
+    public function getTodasFormacoes(): array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->query("SELECT * FROM Formacao ORDER BY id");
         return $stmt->fetchAll();
     }
 }
