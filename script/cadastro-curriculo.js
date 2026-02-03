@@ -3,7 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const alertContainer = document.getElementById('alert-container');
     const submitBtn = form.querySelector('button[type="submit"]');
     let alertTimeout;
-    const cargoSelect = document.getElementById('cargo');
+    const cargoInput = document.getElementById('cargoInput');
+    const cargoHidden = document.getElementById('cargoHidden');
+    const datalistOptions = document.getElementById('datalistOptions');
+    let cargosList = [];
 
     const showAlert = (message, type) => {
         if (alertContainer) {
@@ -24,24 +27,40 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     async function carregarCargos() {
-        if (!cargoSelect) return;
+        if (!datalistOptions) return;
         try {
             const response = await fetch('api/cargos.php');
             if (response.ok) {
-                const cargos = await response.json();
-                // Mantém a opção padrão "Selecione..."
-                cargoSelect.innerHTML = '<option value="" selected disabled>Selecione um cargo...</option>';
+                cargosList = await response.json();
+                datalistOptions.innerHTML = '';
                 
-                cargos.forEach(cargo => {
+                cargosList.forEach(cargo => {
                     const option = document.createElement('option');
-                    option.value = cargo.id;
-                    option.textContent = cargo.nome;
-                    cargoSelect.appendChild(option);
+                    option.value = cargo.nome;
+                    datalistOptions.appendChild(option);
                 });
             }
         } catch (error) {
             console.error('Erro ao carregar cargos:', error);
         }
+    }
+
+    if (cargoInput) {
+        cargoInput.addEventListener('input', function() {
+            const val = this.value;
+            const found = cargosList.find(c => c.nome === val);
+            if (found) {
+                if (cargoHidden) cargoHidden.value = found.id;
+                this.setCustomValidity('');
+            } else {
+                if (cargoHidden) cargoHidden.value = '';
+                if (val === '') {
+                    this.setCustomValidity('');
+                } else {
+                    this.setCustomValidity('Escolha uma das opções.');
+                }
+            }
+        });
     }
 
     if (form) {

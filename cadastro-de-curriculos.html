@@ -39,9 +39,9 @@
 
                     <div class="mb-3">
                         <label for="cargo" class="form-label">Cargo Pretendido</label>
-                        <select class="form-select" id="cargo" name="cargo" required>
-                            <option value="" selected disabled>Selecione um cargo...</option>
-                        </select>
+                        <input class="form-control" list="datalistOptions" id="cargoInput" placeholder="Digite para buscar..." required autocomplete="off">
+                        <datalist id="datalistOptions"></datalist>
+                        <input type="hidden" id="cargoHidden" name="cargo">
                     </div>
 
                     <div class="mb-4">
