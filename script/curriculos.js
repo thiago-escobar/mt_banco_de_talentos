@@ -43,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
 
         if (!Array.isArray(lista) || lista.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum currículo encontrado.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum currículo encontrado.</td></tr>';
             return;
         }
 
         lista.forEach(curriculo => {
             const tr = document.createElement('tr');
-            const linkTags = `<button type="button" class="btn btn-sm btn-outline-secondary ms-1 btn-tags" data-id="${curriculo.id}" title="Gerenciar Tags"><i class="bi bi-tag"></i></button>`;
-            const btnAnotacao = `<button type="button" class="btn btn-sm btn-outline-secondary ms-1 btn-anotacao" data-id="${curriculo.id}" title="Abrir Anotação"><i class="bi bi-pencil"></i></button>`;
+            const linkTags = `<button type="button" class="btn btn-sm btn-outline-secondary btn-tags" data-id="${curriculo.id}" title="Gerenciar Tags"><i class="bi bi-tag"></i></button>`;
+            const btnAnotacao = `<button type="button" class="btn btn-sm btn-outline-secondary btn-anotacao" data-id="${curriculo.id}" title="Abrir Anotação"><i class="bi bi-pencil"></i></button>`;
             const linkArquivo = `<a href="api/download.php?id=${curriculo.id}" target="_blank" class="btn btn-sm btn-outline-primary" title="Baixar Currículo"><i class="bi bi-file-earmark-arrow-down-fill"></i></a>`;
             
             let anotacao = curriculo.anotacao || '';
@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tr.innerHTML = `
                 <td>${curriculo.nome || '-'}</td>
+                <td>${curriculo.formacao || '-'}</td>
                 <td>${curriculo.cargo || '-'}</td>
                 <td>${tagsHtml}</td>
                 <td>${anotacao}</td>
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function carregarCurriculos() {
         try {
             // Feedback visual de carregamento
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Carregando dados...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center">Carregando dados...</td></tr>';
 
             // Chamada para a API (assumindo o endpoint api/curriculos.php)
             const response = await fetch('api/curriculos.php');
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Erro:', error);
             showAlert('Não foi possível carregar os currículos. Verifique sua conexão ou tente novamente mais tarde.', 'danger');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Falha ao carregar dados.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Falha ao carregar dados.</td></tr>';
         }
     }
 
@@ -168,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredCurriculos = todosCurriculos.filter(c => 
                 termos.every(termo => 
                     (c.nome && c.nome.toLowerCase().includes(termo)) || 
+                    (c.formacao && c.formacao.toLowerCase().includes(termo)) ||
                     (c.cargo && c.cargo.toLowerCase().includes(termo)) ||
                     (c.anotacao && c.anotacao.toLowerCase().includes(termo)) ||
                     (c.tags && c.tags.toLowerCase().includes(termo))

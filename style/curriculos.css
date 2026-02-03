@@ -5,6 +5,9 @@ th{
 .tabela-campo-anotacoes{
     width: 33%;
 }
+.tabela-campo-botoes-acao{
+    width: 130px;
+}
 button{
     background-color: #444 !important;
     color: #FFF !important;

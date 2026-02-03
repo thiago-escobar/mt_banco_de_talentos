@@ -13,7 +13,7 @@ class Curriculo
         
         // Seleciona todos os currículos. 
         // Certifique-se de que a tabela 'Curriculos' existe no seu banco de dados.
-        $stmt = $pdo->query("SELECT cur.id, cur.nome, car.nome as cargo, cur.anotacao, GROUP_CONCAT(tag.id SEPARATOR ',') AS tags_ids, GROUP_CONCAT(tag.nome SEPARATOR ',') AS tags, GROUP_CONCAT(tag.cor SEPARATOR ',') AS corestag FROM Curriculos AS cur LEFT JOIN Cargos as car ON cur.cargo = car.id LEFT JOIN CurriculosTags AS cut ON cut.curriculo = cur.id LEFT JOIN Tags AS tag ON cut.tag = tag.id GROUP BY cur.id, cur.nome;");
+        $stmt = $pdo->query("SELECT cur.id, cur.nome, IF(cur.formacao_descricao IS NOT NULL, CONCAT(form.nome, ' - ', cur.formacao_descricao), form.nome) as formacao, car.nome as cargo, cur.anotacao, GROUP_CONCAT(tag.id SEPARATOR ',') AS tags_ids, GROUP_CONCAT(tag.nome SEPARATOR ',') AS tags, GROUP_CONCAT(tag.cor SEPARATOR ',') AS corestag FROM Curriculos AS cur LEFT JOIN Cargos as car ON cur.cargo = car.id LEFT JOIN CurriculosTags AS cut ON cut.curriculo = cur.id LEFT JOIN Tags AS tag ON cut.tag = tag.id LEFT JOIN Formacao AS form ON cur.formacao = form.id GROUP BY cur.id, cur.nome;");
         return $stmt->fetchAll();
     }
 

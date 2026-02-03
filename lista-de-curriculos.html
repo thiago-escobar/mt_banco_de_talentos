@@ -18,7 +18,7 @@
             <a href="dashboard" class="btn btn-secondary btn-breadcrumb">Voltar</a>
         </div>
         <div class="mb-3">
-            <input type="text" id="filtro-curriculos" class="form-control" placeholder="Filtrar por nome, cargo, tags ou anotações.">
+            <input type="text" id="filtro-curriculos" class="form-control" placeholder="Filtrar por nome, formação, cargo, tags ou anotações. Some filtros usando o +.">
         </div>
         <div id="alert-container" class="mb-4"></div>
         <div class="card shadow-sm">
@@ -28,15 +28,16 @@
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">Nome</th>
+                                <th scope="col">Formação</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Tags</th>
                                 <th scope="col" class="tabela-campo-anotacoes">Anotações</th>
-                                <th scope="col">Ações</th>
+                                <th scope="col" class="tabela-campo-botoes-acao">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-curriculos">
                             <tr>
-                                <td colspan="5" class="text-center">Carregando dados...</td>
+                                <td colspan="6" class="text-center">Carregando dados...</td>
                             </tr>
                         </tbody>
                     </table>
