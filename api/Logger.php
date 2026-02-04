@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Config\Database;
+use PDO;
 
 class Logger
 {
@@ -23,5 +24,16 @@ class Logger
                 error_log("Erro ao salvar log no banco: " . $e->getMessage());
             }
         }
+    }
+
+    public static function getAll(): array
+    {
+        $pdo = Database::getConnection();
+        $sql = "SELECT l.id, u.nome as usuario_nome, l.mensagem, l.datalog 
+                FROM Logs l 
+                LEFT JOIN Usuarios u ON l.usuario = u.id 
+                ORDER BY l.datalog DESC";
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
