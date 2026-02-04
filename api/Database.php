@@ -13,10 +13,10 @@ class Database
     {
         if (self::$connection === null) {
             // Ajuste as credenciais conforme seu ambiente
-            $host = 'localhost';
-            $db   = 'matost34_bnc_tlnt';
-            $user = 'matost34_thiagoescobar';
-            $pass = 'D3s3nv0lvim3nt0!';
+            $host = getenv('DB_HOST') ?: 'localhost';
+            $db   = getenv('DB_NAME') ?: 'matost34_bnc_tlnt';
+            $user = getenv('DB_USER') ?: 'matost34_thiagoescobar';
+            $pass = getenv('DB_PASS') ?: 'D3s3nv0lvim3nt0!';
             $charset = 'utf8mb4';
 
             $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Config\Database;
+use App\Models\Logger;
 use PDO;
 
 class Curriculo
@@ -13,7 +14,22 @@ class Curriculo
         
         // Seleciona todos os currículos. 
         // Certifique-se de que a tabela 'Curriculos' existe no seu banco de dados.
-        $stmt = $pdo->query("SELECT cur.id, cur.nome, IF(cur.formacao_descricao IS NOT NULL, CONCAT(form.nome, ' - ', cur.formacao_descricao), form.nome) as formacao, car.nome as cargo, cur.anotacao, GROUP_CONCAT(tag.id SEPARATOR ',') AS tags_ids, GROUP_CONCAT(tag.nome SEPARATOR ',') AS tags, GROUP_CONCAT(tag.cor SEPARATOR ',') AS corestag FROM Curriculos AS cur LEFT JOIN Cargos as car ON cur.cargo = car.id LEFT JOIN CurriculosTags AS cut ON cut.curriculo = cur.id LEFT JOIN Tags AS tag ON cut.tag = tag.id LEFT JOIN Formacao AS form ON cur.formacao = form.id GROUP BY cur.id, cur.nome;");
+        $sql = "SELECT 
+                    cur.id, 
+                    cur.nome, 
+                    IF(cur.formacao_descricao IS NOT NULL, CONCAT(form.nome, ' - ', cur.formacao_descricao), form.nome) as formacao, 
+                    car.nome as cargo, 
+                    cur.anotacao, 
+                    GROUP_CONCAT(tag.id SEPARATOR ',') AS tags_ids, 
+                    GROUP_CONCAT(tag.nome SEPARATOR ',') AS tags, 
+                    GROUP_CONCAT(tag.cor SEPARATOR ',') AS corestag 
+                FROM Curriculos AS cur 
+                LEFT JOIN Cargos as car ON cur.cargo = car.id 
+                LEFT JOIN CurriculosTags AS cut ON cut.curriculo = cur.id 
+                LEFT JOIN Tags AS tag ON cut.tag = tag.id 
+                LEFT JOIN Formacao AS form ON cur.formacao = form.id 
+                GROUP BY cur.id, cur.nome, cur.formacao_descricao, form.nome, car.nome, cur.anotacao";
+        $stmt = $pdo->query($sql);
         return $stmt->fetchAll();
     }
 
@@ -22,21 +38,33 @@ class Curriculo
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("SELECT nome, arquivo, extensaoarquivo FROM Curriculos WHERE id = ?");
         $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        if ($result) {
+            Logger::log("Realizou download do currículo ID: $id ({$result['nome']})");
+        }
+        return $result;
     }
 
     public function create(string $nome, string $email, string $telefone, int $cargo, int $formacao, ?string $formacaoDescricao, string $arquivoContent, string $extensao): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("INSERT INTO Curriculos (nome, email, telefone, cargo, formacao, formacao_descricao, arquivo, extensaoarquivo, dataenvio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-        return $stmt->execute([$nome, $email, $telefone, $cargo, $formacao, $formacaoDescricao ?: null, $arquivoContent, $extensao]);
+        $success = $stmt->execute([$nome, $email, $telefone, $cargo, $formacao, $formacaoDescricao ?: null, $arquivoContent, $extensao]);
+        if ($success) {
+            Logger::log("Cadastrou novo currículo: $nome");
+        }
+        return $success;
     }
 
     public function updateAnotacao(int $id, string $anotacao): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("UPDATE Curriculos SET anotacao = ? WHERE id = ?");
-        return $stmt->execute([$anotacao, $id]);
+        $success = $stmt->execute([$anotacao, $id]);
+        if ($success) {
+            Logger::log("Atualizou a anotação '$anotacao' do currículo ID: $id");
+        }
+        return $success;
     }
 
     public function getTodasTags(): array
@@ -50,14 +78,22 @@ class Curriculo
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("INSERT INTO Tags (nome, cor) VALUES (?, ?)");
-        return $stmt->execute([$nome, $cor]);
+        $success = $stmt->execute([$nome, $cor]);
+        if ($success) {
+            Logger::log("Criou nova tag: $nome");
+        }
+        return $success;
     }
 
     public function atualizarTag(int $id, string $nome, string $cor): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("UPDATE Tags SET nome = ?, cor = ? WHERE id = ?");
-        return $stmt->execute([$nome, $cor, $id]);
+        $success = $stmt->execute([$nome, $cor, $id]);
+        if ($success) {
+            Logger::log("Atualizou tag ID: $id para $nome");
+        }
+        return $success;
     }
 
     public function excluirTag(int $id): bool
@@ -68,21 +104,33 @@ class Curriculo
         $stmt->execute([$id]);
         
         $stmt = $pdo->prepare("DELETE FROM Tags WHERE id = ?");
-        return $stmt->execute([$id]);
+        $success = $stmt->execute([$id]);
+        if ($success) {
+            Logger::log("Excluiu tag ID: $id");
+        }
+        return $success;
     }
 
     public function adicionarTag(int $curriculoId, int $tagId): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("INSERT IGNORE INTO CurriculosTags (curriculo, tag) VALUES (?, ?)");
-        return $stmt->execute([$curriculoId, $tagId]);
+        $success = $stmt->execute([$curriculoId, $tagId]);
+        if ($success) {
+            Logger::log("Adicionou tag ID $tagId ao currículo ID $curriculoId");
+        }
+        return $success;
     }
 
     public function removerTag(int $curriculoId, int $tagId): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("DELETE FROM CurriculosTags WHERE curriculo = ? AND tag = ?");
-        return $stmt->execute([$curriculoId, $tagId]);
+        $success = $stmt->execute([$curriculoId, $tagId]);
+        if ($success) {
+            Logger::log("Removeu tag ID $tagId do currículo ID $curriculoId");
+        }
+        return $success;
     }
 
     public function getTodosCargos(): array

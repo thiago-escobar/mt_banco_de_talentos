@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Curriculo;
+use App\Models\Logger;
 
 class CurriculoController
 {
@@ -15,6 +16,7 @@ class CurriculoController
                 
                 echo json_encode($curriculos);
             } catch (\Exception $e) {
+                Logger::log("Erro ao listar currículos: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao carregar currículos.']);
             }
@@ -80,6 +82,7 @@ class CurriculoController
                     echo json_encode(['error' => 'Erro ao salvar no banco de dados.']);
                 }
             } catch (\Exception $e) {
+                Logger::log("Erro ao criar currículo: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao salvar currículo.']);
             }
@@ -129,6 +132,7 @@ class CurriculoController
                         echo json_encode(['error' => 'Falha ao atualizar anotação']);
                     }
                 } catch (\Exception $e) {
+                    Logger::log("Erro ao atualizar anotação (ID $id): " . $e->getMessage());
                     http_response_code(500);
                     echo json_encode(['error' => 'Erro ao atualizar anotação.']);
                 }
@@ -149,6 +153,7 @@ class CurriculoController
                 $model = new Curriculo();
                 echo json_encode($model->getTodasTags());
             } catch (\Exception $e) {
+                Logger::log("Erro ao listar tags: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao listar tags.']);
             }
@@ -178,6 +183,7 @@ class CurriculoController
                     echo json_encode(['error' => 'Erro ao criar tag.']);
                 }
             } catch (\Exception $e) {
+                Logger::log("Erro ao criar tag ($nome): " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao criar tag.']);
             }
@@ -208,6 +214,7 @@ class CurriculoController
                     echo json_encode(['error' => 'Erro ao atualizar tag.']);
                 }
             } catch (\Exception $e) {
+                Logger::log("Erro ao atualizar tag (ID $id): " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao atualizar tag.']);
             }
@@ -236,6 +243,7 @@ class CurriculoController
                     echo json_encode(['error' => 'Erro ao excluir tag.']);
                 }
             } catch (\Exception $e) {
+                Logger::log("Erro ao excluir tag (ID $id): " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao excluir tag.']);
             }
@@ -270,6 +278,7 @@ class CurriculoController
                 $model = new Curriculo();
                 echo json_encode($model->getTodosCargos());
             } catch (\Exception $e) {
+                Logger::log("Erro ao listar cargos: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao listar cargos.']);
             }
@@ -283,6 +292,7 @@ class CurriculoController
                 $model = new Curriculo();
                 echo json_encode($model->getTodasFormacoes());
             } catch (\Exception $e) {
+                Logger::log("Erro ao listar formações: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => 'Erro ao listar formações.']);
             }

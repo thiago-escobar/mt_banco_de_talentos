@@ -1,27 +1,15 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    exit(0);
-}
-
-spl_autoload_register(function ($class) {
-    $parts = explode('\\', $class);
-    $className = end($parts);
-    $file = __DIR__ . '/' . $className . '.php';
-    if (file_exists($file)) {
-        require_once $file;
-    }
-});
+require_once __DIR__ . '/bootstrap.php';
 
 use App\Controllers\UserController;
+
+// Verificar se o usuário está autenticado
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Acesso não autorizado.']);
+    exit;
+}
 
 try {
     $controller = new UserController();

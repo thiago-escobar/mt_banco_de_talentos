@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Logger;
 
 class UserController
 {
@@ -14,6 +15,7 @@ class UserController
                 $users = $userModel->getAll();
                 echo json_encode($users);
             } catch (\Exception $e) {
+                Logger::log("Erro ao listar usuários: " . $e->getMessage());
                 http_response_code(500);
                 echo json_encode(['error' => $e->getMessage()]);
             }
@@ -63,6 +65,7 @@ class UserController
                         echo json_encode(['error' => 'Falha ao realizar operação']);
                     }
                 } catch (\Exception $e) {
+                    Logger::log("Erro em operação de usuário (ID $id): " . $e->getMessage());
                     http_response_code(500);
                     echo json_encode(['error' => $e->getMessage()]);
                 }

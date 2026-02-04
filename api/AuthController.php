@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Logger;
 
 class AuthController
 {
@@ -23,6 +24,8 @@ class AuthController
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['nome'];
                 
+                Logger::log("Usuário realizou login.");
+
                 header('Location: ../dashboard');
                 exit;
             } else {
@@ -54,6 +57,7 @@ class AuthController
                 http_response_code(201);
                 echo "Usuário criado com sucesso.";
             } catch (\Exception $e) {
+                Logger::log("Erro ao registrar usuário ($email): " . $e->getMessage());
                 http_response_code(400);
                 echo $e->getMessage();
             }

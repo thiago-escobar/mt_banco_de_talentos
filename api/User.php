@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Config\Database;
+use App\Models\Logger;
 
 class User
 {
@@ -33,7 +34,11 @@ class User
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("INSERT INTO Usuarios (nome, email, senha, perfil, habilitado) VALUES (:nome, :email, :senha, :perfil, '1')");
-        return $stmt->execute(['nome' => $name, 'email' => $email, 'senha' => $hashedPassword, 'perfil' => $cargo]);
+        $success = $stmt->execute(['nome' => $name, 'email' => $email, 'senha' => $hashedPassword, 'perfil' => $cargo]);
+        if ($success) {
+            Logger::log("Cadastrou novo usuário: $email");
+        }
+        return $success;
     }
 
     public function getAll(): array
@@ -47,7 +52,11 @@ class User
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("UPDATE Usuarios SET senha = ? WHERE id = ?");
-        return $stmt->execute([$newPasswordHash, $id]);
+        $success = $stmt->execute([$newPasswordHash, $id]);
+        if ($success) {
+            Logger::log("Resetou a senha do usuário ID: $id");
+        }
+        return $success;
     }
 
     public function toggleProfile(int $id): bool
@@ -55,13 +64,21 @@ class User
         $pdo = Database::getConnection();
         // Alterna entre 1 (Admin) e 2 (Recrutador)
         $stmt = $pdo->prepare("UPDATE Usuarios SET perfil = CASE WHEN perfil = 1 THEN 2 ELSE 1 END WHERE id = ?");
-        return $stmt->execute([$id]);
+        $success = $stmt->execute([$id]);
+        if ($success) {
+            Logger::log("Alterou o perfil do usuário ID: $id");
+        }
+        return $success;
     }
 
     public function delete(int $id): bool
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("UPDATE Usuarios SET habilitado = 0 WHERE id = ?");
-        return $stmt->execute([$id]);
+        $success = $stmt->execute([$id]);
+        if ($success) {
+            Logger::log("Desabilitou (excluiu) o usuário ID: $id");
+        }
+        return $success;
     }
 }
