@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cargoHidden = document.getElementById('cargoHidden');
     const datalistOptions = document.getElementById('datalistOptions');
     const formacaoSelect = document.getElementById('formacao');
+    const telefoneInput = document.getElementById('telefone');
     let cargosList = [];
 
     const showAlert = (message, type) => {
@@ -81,6 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.setCustomValidity('Escolha uma das opções.');
                 }
             }
+        });
+    }
+
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+            v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+            v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+            e.target.value = v;
         });
     }
 
