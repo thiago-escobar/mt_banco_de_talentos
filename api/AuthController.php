@@ -23,6 +23,7 @@ class AuthController
                 }
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['nome'];
+                $_SESSION['user_profile'] = $user['perfil'];
                 
                 Logger::log("Usuário realizou login.");
 

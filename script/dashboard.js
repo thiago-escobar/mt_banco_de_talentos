@@ -39,4 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Verifica permissões do usuário
+    fetch('api/check_session.php')
+        .then(response => response.json())
+        .then(data => {
+            // Perfil 1 = Administrador
+            if (data.authenticated && data.profile == 1) {
+                const adminUsers = document.getElementById('admin-users');
+                const adminLogs = document.getElementById('admin-logs');
+                
+                if (adminUsers) adminUsers.classList.remove('d-none');
+                if (adminLogs) adminLogs.classList.remove('d-none');
+            }
+        })
+        .catch(err => console.error('Erro ao verificar sessão:', err));
 });

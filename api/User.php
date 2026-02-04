@@ -11,7 +11,7 @@ class User
     {
         $pdo = Database::getConnection();
         
-        $stmt = $pdo->prepare("SELECT id, nome, email, senha FROM Usuarios WHERE email = :email LIMIT 1");
+        $stmt = $pdo->prepare("SELECT id, nome, email, senha, perfil FROM Usuarios WHERE email = :email LIMIT 1");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
