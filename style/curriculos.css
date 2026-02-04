@@ -6,16 +6,18 @@ th{
     width: 33%;
 }
 .tabela-campo-botoes-acao{
-    width: 130px;
+    width: 200px;
 }
 button{
+    border-color: #444 !important;
     background-color: #444 !important;
-    color: #FFF !important;
+    color: #FFCB05 !important;
+    font-weight: bold !important;
 }
 .btn-outline-primary{
     border-color: #444 !important;
-    color: #444 !important;
-    background-color: #FFCB05 !important;
+    background-color: #444 !important;
+    color: #FFCB05 !important;
     font-weight: bold !important;
 }
 .btn-close{
@@ -30,8 +32,8 @@ button{
     color: #FFCB05 !important;
 }
 .page-item.active .page-link {
-    background-color: #FFCB05 !important;
+    color: #FFCB05 !important;
+    background-color: #444 !important;
     border-color: #444 !important;
-    color: #444 !important;
     font-weight: bold;
 }

@@ -17,6 +17,8 @@ class Curriculo
         $sql = "SELECT 
                     cur.id, 
                     cur.nome, 
+                    cur.email, 
+                    cur.telefone, 
                     IF(cur.formacao_descricao IS NOT NULL, CONCAT(form.nome, ' - ', cur.formacao_descricao), form.nome) as formacao, 
                     car.nome as cargo, 
                     cur.anotacao, 
