@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const linkTags = `<button type="button" class="btn btn-sm btn-outline-secondary btn-tags" data-id="${curriculo.id}" title="Gerenciar Tags"><i class="bi bi-tag"></i></button>`;
             const btnAnotacao = `<button type="button" class="btn btn-sm btn-outline-secondary btn-anotacao" data-id="${curriculo.id}" title="Abrir Anotação"><i class="bi bi-pencil"></i></button>`;
             const linkArquivo = `<a href="api/download.php?id=${curriculo.id}" target="_blank" class="btn btn-sm btn-outline-primary" title="Baixar Currículo"><i class="bi bi-file-text"></i></a>`;
-            const linkEmail = `<a href="mailto:${curriculo.email}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contactar por E-mail"><i class="bi bi-envelope"></i></a>`;
-            const linkWhatsapp = `<a href="https://wa.me/55${telefoneFormatado}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contactar por Whatsapp"><i class="bi bi-whatsapp"></i></a>`;
+            const linkEmail = `<a href="mailto:${curriculo.email}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por E-mail"><i class="bi bi-envelope"></i></a>`;
+            const linkWhatsapp = `<a href="https://wa.me/55${telefoneFormatado}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por Whatsapp"><i class="bi bi-whatsapp"></i></a>`;
             let anotacao = curriculo.anotacao || '';
             if (anotacao.length > 100) {
                 anotacao = anotacao.substring(0, 99) + '...';
