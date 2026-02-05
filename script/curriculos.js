@@ -48,12 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lista.forEach(curriculo => {
             const tr = document.createElement('tr');
+
             let telefoneFormatado = formatarTelefone(curriculo.telefone);
             const linkTags = `<button type="button" class="btn btn-sm btn-outline-secondary btn-tags" data-id="${curriculo.id}" title="Gerenciar Tags"><i class="bi bi-tag"></i></button>`;
             const btnAnotacao = `<button type="button" class="btn btn-sm btn-outline-secondary btn-anotacao" data-id="${curriculo.id}" title="Abrir Anotação"><i class="bi bi-pencil"></i></button>`;
             const linkArquivo = `<a href="api/download.php?id=${curriculo.id}" target="_blank" class="btn btn-sm btn-outline-primary" title="Baixar Currículo"><i class="bi bi-file-text"></i></a>`;
             const linkEmail = `<a href="mailto:${curriculo.email}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por E-mail"><i class="bi bi-envelope"></i></a>`;
             const linkWhatsapp = `<a href="https://wa.me/55${telefoneFormatado}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por Whatsapp"><i class="bi bi-whatsapp"></i></a>`;
+            const btnAdmissao = `<button type="button" class="btn btn-sm btn-outline-secondary btn-admissao" data-id="${curriculo.id}" title="Iniciar Admissão"><i class="bi bi-person-fill-add"></i></button>`;
             let anotacao = curriculo.anotacao || '';
             if (anotacao.length > 100) {
                 anotacao = anotacao.substring(0, 99) + '...';
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${curriculo.cargo || '-'}</td>
                 <td>${tagsHtml}</td>
                 <td>${anotacao}</td>
-                <td>${linkTags} ${btnAnotacao} ${linkArquivo} ${linkEmail} ${linkWhatsapp}</td>
+                <td>${linkTags} ${btnAnotacao} ${linkArquivo} ${linkEmail} ${linkWhatsapp} ${btnAdmissao}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -209,6 +211,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (curriculo) {
                 abrirModalTags(curriculo);
             }
+        }
+    });
+
+    // Evento para abrir o modal de admissão
+    tbody.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-admissao');
+        if (btn) {
+            const id = btn.getAttribute('data-id');
+            document.getElementById('idCurriculoAdmissao').value = id;
+            const modal = new bootstrap.Modal(document.getElementById('admissaoModal'));
+            modal.show();
         }
     });
 
@@ -361,6 +374,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Evento para confirmar admissão
+    const btnConfirmarAdmissao = document.getElementById('btnConfirmarAdmissao');
+    if (btnConfirmarAdmissao) {
+        btnConfirmarAdmissao.addEventListener('click', async () => {
+            const id = document.getElementById('idCurriculoAdmissao').value;
+            const modalElement = document.getElementById('admissaoModal');
+            const btn = btnConfirmarAdmissao;
+            
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Processando...';
+
+            try {
+                const formData = new FormData();
+                formData.append('id', id);
+
+                const response = await fetch('api/iniciar_admissao.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    modal.hide();
+                    showAlert('Processo de admissão iniciado com sucesso!', 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showAlert('Erro: ' + (result.error || 'Falha ao iniciar admissão'), 'danger');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showAlert('Erro de conexão.', 'danger');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        });
+    }
+
     carregarTagsSistema();
     carregarCurriculos();
 });

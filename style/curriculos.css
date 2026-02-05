@@ -6,7 +6,7 @@ th{
     width: 33%;
 }
 .tabela-campo-botoes-acao{
-    width: 200px;
+    width: 240px;
 }
 button{
     border-color: #444 !important;
@@ -19,6 +19,12 @@ button{
     background-color: #444 !important;
     color: #FFCB05 !important;
     font-weight: bold !important;
+}
+.btn-admissao{
+    background-color: #FFCB05 !important;
+    color: #444 !important;
+    font-size: 20px;
+    padding: 0px 5px;
 }
 .btn-close{
     background-color: #FFF !important;
@@ -36,4 +42,9 @@ button{
     background-color: #444 !important;
     border-color: #444 !important;
     font-weight: bold;
+}
+#listaTagsAtuais i{
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: black;
 }

@@ -28,6 +28,9 @@
             <div class="col-md-4">
                 <a href="cadastro-de-tags" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi bi-tags-fill me-2"></i>Gerenciar Tags</a>
             </div>
+            <div class="col-md-4">
+                <a href="acompanhamento-admissoes" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i>Gerenciar Admissões</a>
+            </div>
             <div class="col-md-4 d-none" id="admin-users">
                 <a href="lista-de-usuarios" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-people-fill me-2"></i>Gerenciar Usuários</a>
             </div>

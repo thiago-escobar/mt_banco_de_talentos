@@ -18,7 +18,7 @@ class Curriculo
                     cur.id, 
                     cur.nome, 
                     cur.email, 
-                    cur.telefone, 
+                    cur.telefone,  
                     IF(cur.formacao_descricao IS NOT NULL, CONCAT(form.nome, ' - ', cur.formacao_descricao), form.nome) as formacao, 
                     car.nome as cargo, 
                     cur.anotacao, 
@@ -30,6 +30,7 @@ class Curriculo
                 LEFT JOIN CurriculosTags AS cut ON cut.curriculo = cur.id 
                 LEFT JOIN Tags AS tag ON cut.tag = tag.id 
                 LEFT JOIN Formacao AS form ON cur.formacao = form.id 
+                WHERE cur.em_admissao = 0
                 GROUP BY cur.id, cur.nome, cur.formacao_descricao, form.nome, car.nome, cur.anotacao";
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll();
@@ -147,5 +148,23 @@ class Curriculo
         $pdo = Database::getConnection();
         $stmt = $pdo->query("SELECT * FROM Formacao ORDER BY id");
         return $stmt->fetchAll();
+    }
+
+    public function iniciarAdmissao(int $id): bool
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE Curriculos SET em_admissao = 1 WHERE id = ?");
+
+        $success = $stmt->execute([$id]);
+        if ($success) {
+            $senha = str_pad((string)mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+            $codigo_acesso = bin2hex(random_bytes(10));
+
+            $stmtAdmissao = $pdo->prepare("INSERT INTO Admissoes (candidato, data_inicio, senha, codigo_acesso) VALUES (?, ?, ?, ?)");
+            $stmtAdmissao->execute([$id, date('Y-m-d H:i:s'), $senha, $codigo_acesso]);
+
+            Logger::log("Iniciou processo de admissão para o currículo ID: $id");
+        }
+        return $success;
     }
 }
