@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusFinalizado = item.finalizado == 1 
                 ? '<span class="badge bg-warning text-dark">Sim</span>'
                 : '<span class="badge bg-secondary">Não</span>';
+            let telefoneFormatado = formatarTelefone(item.candidato_telefone);
             const btnDocumentos = `<button type="button" class="btn btn-sm btn-outline-secondary" data-id="${item.id}" title="Ver Documentacao"><i class="bi bi-file-earmark-check"></i></button>`;
+            const linkEmail = `<a href="mailto:${item.candidato_email}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por E-mail"><i class="bi bi-envelope"></i></a>`;
+            const linkWhatsapp = `<a href="https://wa.me/55${telefoneFormatado}" target="_blank" class="btn btn-sm btn-outline-primary" title="Contatar por Whatsapp"><i class="bi bi-whatsapp"></i></a>`;
+            const btnCancelar = `<button type="button" class="btn btn-sm btn-outline-secondary btn-cancelar" data-id="${item.id}" title="Cancelar Processo"><i class="bi bi-trash-fill"></i></button>`;
+            const btnFinalizar = `<button type="button" class="btn btn-sm btn-outline-secondary btn-finalizar" data-id="${item.id}" title="Finalizar Processo"><i class="bi bi-person-check-fill"></i></button>`;
             tr.innerHTML = `
                 <td>${item.candidato_nome || 'Candidato não encontrado'}</td>
                 <td>${formatarData(item.data_inicio)}</td>
@@ -35,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.senha}</td>
                 <td>${statusAcessado}</td>
                 <td>${statusFinalizado}</td>
-                <td>${btnDocumentos}</td>
+                <td>${btnDocumentos} ${linkEmail} ${linkWhatsapp} ${btnCancelar} ${btnFinalizar}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -67,3 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     carregarAdmissoes();
 });
+function formatarTelefone(telefone) {
+    if (!telefone) return '';
+    return telefone.replace(/\D/g, '');
+}

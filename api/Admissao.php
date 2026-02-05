@@ -18,7 +18,9 @@ class Admissao
                     a.finalizado,
                     a.senha,
                     a.data_inicio,
-                    c.nome as candidato_nome
+                    c.nome as candidato_nome,
+                    c.email as candidato_email,
+                    c.telefone as candidato_telefone
                 FROM Admissoes a
                 LEFT JOIN Curriculos c ON a.candidato = c.id
                 ORDER BY a.id DESC";

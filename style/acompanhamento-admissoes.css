@@ -4,3 +4,27 @@
     color: #FFCB05 !important;
     font-weight: bold !important;
 }
+.btn-outline-primary{
+    border-color: #444 !important;
+    background-color: #444 !important;
+    color: #FFCB05 !important;
+    font-weight: bold !important;
+}
+.badge{
+    margin-bottom: 2px;
+}
+.btn-finalizar{
+    background-color: #FFCB05 !important;
+    color: #444 !important;
+    font-size: 20px;
+    padding: 0px 5px;
+}
+.btn-cancelar{
+    background-color: #B00 !important;
+    color: #FFF !important;
+    border-color: #900 !important;
+    font-weight: bold !important;
+}
+.tabela-campo-botoes-acao{
+    width: 200px;
+}

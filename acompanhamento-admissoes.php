@@ -33,7 +33,7 @@
                                 <th scope="col">Senha</th>
                                 <th scope="col">Acessado</th>
                                 <th scope="col">Finalizado</th>
-                                <th scope="col">Ações</th>
+                                <th scope="col" class="tabela-campo-botoes-acao">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-admissoes">
