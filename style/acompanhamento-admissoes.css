@@ -24,6 +24,8 @@
     color: #FFF !important;
     border-color: #900 !important;
     font-weight: bold !important;
+    font-size: 20px;
+    padding: 0px 5px;
 }
 .tabela-campo-botoes-acao{
     width: 200px;

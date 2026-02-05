@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processos de Admissão - Matos Teixeira</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="style/global.css" rel="stylesheet">
+    <link href="style/admissao.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Processos de Admissão</h2>
+        </div>
+        <div id="password-container" class="card shadow-sm mt-4 mx-auto d-none" style="max-width: 400px;">
+            <div class="card-body p-4">
+                <h5 class="card-title text-center mb-3">Validação de Segurança</h5>
+                <form id="form-senha">
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha (6 números)</label>
+                        <input type="text" class="form-control text-center fs-4" id="senha" name="senha" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script/admissao.js"></script>
+</body>
+</html>
