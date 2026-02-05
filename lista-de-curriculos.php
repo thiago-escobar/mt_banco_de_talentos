@@ -1,3 +1,4 @@
+<?php require_once 'api/protect.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,7 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="style/global.css" rel="stylesheet">
     <link href="style/curriculos.css" rel="stylesheet">
-    <script src="script/auth.js"></script>
 </head>
 <body>
     <div class="container mt-5">

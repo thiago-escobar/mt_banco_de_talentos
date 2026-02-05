@@ -1,3 +1,11 @@
+<?php 
+require_once 'api/protect.php'; 
+
+if ($_SESSION['user_profile'] != 1) {
+    header('Location: acesso-restrito');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,7 +19,6 @@
     <link href="style/usuarios.css" rel="stylesheet">
     <!-- Reutilizando estilos da tabela de currículos para manter consistência -->
     <link href="style/curriculos.css" rel="stylesheet">
-    <script src="script/auth.js"></script>
 </head>
 <body>
     <div class="container mt-5">

@@ -1,3 +1,11 @@
+<?php 
+require_once 'api/protect.php'; 
+
+if ($_SESSION['user_profile'] != 1) {
+    header('Location: acesso-restrito');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,7 +17,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="style/global.css" rel="stylesheet">
     <link href="style/logs.css" rel="stylesheet">
-    <script src="script/auth.js"></script>
 </head>
 <body>
     <div class="container mt-5">

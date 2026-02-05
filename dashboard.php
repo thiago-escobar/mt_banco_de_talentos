@@ -1,3 +1,4 @@
+<?php require_once 'api/protect.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,27 +10,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="style/global.css" rel="stylesheet">
     <link href="style/dashboard.css" rel="stylesheet">
-    <script src="script/auth.js"></script>
 </head>
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Banco de Talentos</h2>
-            <a href="#" id="logout-btn" class="btn btn-secondary btn-breadcrumb">Sair</a>
+            <a href="api/logout.php" class="btn btn-secondary btn-breadcrumb">Sair</a>
         </div>
         <div id="alert-container" class="mb-4"></div>
         <div class="row g-3">
             <div class="col-md-4">
                 <a href="lista-de-curriculos" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-search me-2"></i>Pesquisar Currículo</a>
             </div>
-            <div class="col-md-4 d-none" id="admin-users">
-                <a href="lista-de-usuarios" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-people-fill me-2"></i>Gerenciar Usuários</a>
-            </div>
             <div class="col-md-4">
                 <a href="cadastro-de-curriculos" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-person-fill-add me-2"></i>Cadastrar Currículo</a>
             </div>
             <div class="col-md-4">
                 <a href="cadastro-de-tags" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi bi-tags-fill me-2"></i>Gerenciar Tags</a>
+            </div>
+            <div class="col-md-4 d-none" id="admin-users">
+                <a href="lista-de-usuarios" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-people-fill me-2"></i>Gerenciar Usuários</a>
             </div>
             <div class="col-md-4 d-none" id="admin-logs">
                 <a href="logs" class="btn btn-primary w-100 py-3 text-decoration-none"><i class="bi bi-file-text-fill me-2"></i>Logs do Sistema</a>

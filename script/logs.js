@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('api/logs.php');
             
             if (response.status === 401) {
-                window.location.href = 'index.html';
+                window.location.href = '/';
                 return;
             }
 

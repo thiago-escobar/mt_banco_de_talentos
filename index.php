@@ -17,7 +17,7 @@
             </div>
             <div class="card-body p-4">
                 <div id="alert-container"></div>
-                <form>
+                <form action="api/login.php" method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label">E-mail</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="usuario@empresa.com" required>

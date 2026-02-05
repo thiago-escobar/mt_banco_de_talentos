@@ -31,8 +31,7 @@ class AuthController
                 exit;
             } else {
                 // Falha no login
-                http_response_code(401);
-                echo "E-mail ou senha incorretos.";
+                header('Location: ../?error=login_failed');
                 exit;
             }
         }
@@ -63,5 +62,18 @@ class AuthController
                 echo $e->getMessage();
             }
         }
+    }
+
+    public function logout(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        Logger::log("Usuário realizou logout.");
+
+        session_destroy();
+        header('Location: ../');
+        exit;
     }
 }

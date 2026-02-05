@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const logoutBtn = document.getElementById('logout-btn');
     const alertContainer = document.getElementById('alert-container');
     let alertTimeout;
 
@@ -20,25 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(message); // Fallback
         }
     };
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            try {
-                // Assumindo que um endpoint de logout existe em api/logout.php
-                const response = await fetch('api/logout.php', { method: 'POST' });
-
-                if (response.ok) {
-                    window.location.href = '/'; // Redireciona para a página de login
-                } else {
-                    showAlert('Erro ao tentar sair. Por favor, tente novamente.', 'danger');
-                }
-            } catch (error) {
-                showAlert('Não foi possível conectar ao servidor para sair.', 'danger');
-            }
-        });
-    }
 
     // Verifica permissões do usuário
     fetch('api/check_session.php')

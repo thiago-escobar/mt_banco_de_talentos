@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
     const alertContainer = document.getElementById('alert-container');
     let alertTimeout;
 
@@ -22,37 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerText;
-
-            // Feedback visual de carregamento
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Entrando...';
-
-            try {
-                const response = await fetch('api/login.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.redirected) {
-                    window.location.href = "dashboard";//response.url;
-                } else {
-                    // Caso o PHP não redirecione (ex: erro inesperado)
-                    const errorMessage = await response.text();
-                    throw new Error(errorMessage || 'Resposta inválida do servidor');
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                showAlert(error.message, 'danger');
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
-            }
-        });
+    // Verifica parâmetros na URL para exibir erros vindos do PHP
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        const error = urlParams.get('error');
+        if (error === 'login_failed') {
+            showAlert('E-mail ou senha incorretos.', 'danger');
+        }
     }
 });

@@ -1,3 +1,4 @@
+<?php require_once 'api/protect.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,7 +11,6 @@
     <link href="style/global.css" rel="stylesheet">
     <link href="style/curriculos.css" rel="stylesheet">
     <link href="style/tags.css" rel="stylesheet">
-    <script src="script/auth.js"></script>
 </head>
 <body>
     <div class="container mt-5">
