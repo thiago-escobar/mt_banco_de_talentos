@@ -15,18 +15,42 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Processos de Admissão</h2>
         </div>
-        <div id="password-container" class="card shadow-sm mt-4 mx-auto d-none" style="max-width: 400px;">
+        <div id="password-container" class="card shadow-sm mt-4 mx-auto" style="max-width: 400px;">
             <div class="card-body p-4">
                 <h5 class="card-title text-center mb-3">Validação de Segurança</h5>
                 <form id="form-senha">
                     <div class="mb-3">
-                        <label for="senha" class="form-label">Senha (6 números)</label>
-                        <input type="text" class="form-control text-center fs-4" id="senha" name="senha" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required>
+                        <label for="senha" class="form-label">Código de Acesso (6 números)</label>
+                        <input type="text" class="form-control text-center fs-4" id="senha" name="senha" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" placeholder="000000" required autocomplete="off">
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Entrar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+        <div id="documentacao-admissao">
+            <div id="form-docs-container" class="card shadow-sm mt-4 mx-auto d-none" style="max-width: 500px;">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-center mb-3">Envio de Documentação</h5>
+                    <form id="form-docs">
+                        <div class="mb-3">
+                            <label for="doc-numero" class="form-label">Número do Documento</label>
+                            <input type="text" class="form-control" id="doc-numero" name="doc_numero" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doc-frente" class="form-label">Foto do Documento (Frente)</label>
+                            <input type="file" class="form-control" id="doc-frente" name="doc_frente" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doc-verso" class="form-label">Foto do Documento (Verso)</label>
+                            <input type="file" class="form-control" id="doc-verso" name="doc_verso" accept="image/*" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Enviar Documentação</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

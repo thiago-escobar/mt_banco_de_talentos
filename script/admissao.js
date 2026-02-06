@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Bem-vindo! Acesso autorizado com sucesso.');
+                    document.getElementById('password-container').classList.add('d-none');
+                    document.getElementById('form-docs-container').classList.remove('d-none');
                 } else {
                     window.location.href = 'acesso-restrito';
                 }
@@ -47,6 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => {
                 console.error('Erro:', error);
                 window.location.href = 'acesso-restrito';
+            });
+        });
+    }
+
+    const formDocs = document.getElementById('form-docs');
+    if (formDocs) {
+        formDocs.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(formDocs);
+            formData.append('ca', ca);
+
+            fetch('api/enviar_documentacao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Documentação enviada com sucesso!');
+                    document.getElementById('form-docs-container').classList.add('d-none');
+                } else {
+                    alert('Erro: ' + (data.error || 'Falha ao enviar documentação.'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao comunicar com o servidor.');
             });
         });
     }

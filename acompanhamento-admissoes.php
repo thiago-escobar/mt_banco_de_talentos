@@ -32,13 +32,14 @@
                                 <th scope="col">Código de Acesso</th>
                                 <th scope="col">Senha</th>
                                 <th scope="col">Acessado</th>
-                                <th scope="col">Finalizado</th>
+                                <th scope="col" class="tabela-campo-documentos">Documentos Enviados</th>
+                                <th scope="col" class="tabela-campo-documentos">Documentos Validados</th>
                                 <th scope="col" class="tabela-campo-botoes-acao">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-admissoes">
                             <tr>
-                                <td colspan="7" class="text-center">Carregando dados...</td>
+                                <td colspan="8" class="text-center">Carregando dados...</td>
                             </tr>
                         </tbody>
                     </table>

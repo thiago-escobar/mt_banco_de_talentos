@@ -1,0 +1,10 @@
+.moldura-documento{
+    background-color: white;
+    border-radius: 10px;
+}
+img{
+    max-width: inherit;
+}
+h3{
+    margin-top: 1rem;
+}

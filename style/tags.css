@@ -1,4 +1,18 @@
 .link-busca-curriculo-tag{
     background-color: #444;
     color: #FFCB05;
+    font-size: 20px;
+    padding: 0px 5px;
+}
+.btn-editar{
+    font-size: 20px;
+    padding: 0px 5px;
+}
+.btn-excluir{
+    background-color: #B00 !important;
+    color: #FFF !important;
+    border-color: #900 !important;
+    font-weight: bold !important;
+    font-size: 20px;
+    padding: 0px 5px;
 }

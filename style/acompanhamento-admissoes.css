@@ -9,6 +9,8 @@
     background-color: #444 !important;
     color: #FFCB05 !important;
     font-weight: bold !important;
+    font-size: 20px;
+    padding: 0px 5px;
 }
 .badge{
     margin-bottom: 2px;
@@ -27,6 +29,13 @@
     font-size: 20px;
     padding: 0px 5px;
 }
+.tabela-campo-documentos{
+    width: 115px;
+}
 .tabela-campo-botoes-acao{
     width: 200px;
+}
+.btn-documentos{
+    font-size: 20px;
+    padding: 0px 5px;
 }
